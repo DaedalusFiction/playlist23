@@ -1,0 +1,81 @@
+@import-normalize;
+
+:root {
+    --bg-primary: #ccffe0;
+
+    --fc-primary: rgb(36, 36, 36);
+}
+
+/* Reset  */
+
+html {
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+p,
+ol,
+ul,
+a {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    color: var(--fc-primary);
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* variables  */
+
+/* Utilities  */
+
+.container {
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+/* Header  */
+
+.header {
+    background-color: var(--bg-primary);
+    padding: 1.5rem 0;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header ul {
+    display: flex;
+}
+
+.header li {
+    margin: 0 2em;
+}
+
+.header a:hover {
+    text-decoration: underline;
+    /* TODO: add animated underline */
+}
