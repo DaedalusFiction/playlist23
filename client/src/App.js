@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import socketIOClient from "socket.io-client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./routes/Home";
 import Layout from "./components/Layout";
 import CreateRoom from "./routes/CreateRoom";
@@ -10,61 +10,85 @@ import Room from "./routes/Room";
 import About from "./routes/About";
 import NoPage from "./routes/NoPage";
 
-const ENDPOINT = "http://localhost:4001";
-
-const socket = socketIOClient.connect(ENDPOINT);
-
-socket.on("message", (message) => {
-    console.log(message);
-});
-
 function App() {
     const [username, setUsername] = useState("anonymous");
-    const [roomNumber, setRoomNumber] = useState("");
+    const [roomNumber, setRoomNumber] = useState(0);
+    const [joinError, setJoinError] = useState(false);
+    const [socket, setSocket] = useState(null);
+    const navigate = useNavigate();
 
     const enterUsername = (e) => {
         setUsername(e.target.value);
-        console.log(username);
     };
     const enterRoomNumber = (e) => {
         setRoomNumber(e.target.value);
-        console.log(roomNumber);
+        setJoinError(false);
     };
 
-    const joinRoom = (e) => {
-        console.log("joining room");
+    const joinRoom = () => {
+        if (roomNumber > 1000 && roomNumber < 9999) {
+            setJoinError(false);
+            navigate(`/rooms/${roomNumber}`);
+        } else {
+            setJoinError(true);
+        }
     };
 
     const createRoom = () => {
-        console.log("room created");
+        const newRoom = Math.floor(1000 + Math.random() * 9000);
+        setRoomNumber(newRoom);
+        navigate(`/rooms/${newRoom}`);
     };
 
     return (
         <>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Layout />}>
+            <Routes>
+                <Route path="/" element={<Layout />}>
+                    <Route
+                        index
+                        element={
+                            <Home
+                                enterUsername={enterUsername}
+                                roomNumber={roomNumber}
+                                enterRoomNumber={enterRoomNumber}
+                                joinRoom={joinRoom}
+                                createRoom={createRoom}
+                                joinError={joinError}
+                            />
+                        }
+                    />
+                    <Route
+                        path="createRoom"
+                        element={
+                            <CreateRoom
+                                createRoom={createRoom}
+                                enterUsername={enterUsername}
+                            />
+                        }
+                    />
+                    <Route
+                        path="joinRoom"
+                        element={
+                            <JoinRoom
+                                joinRoom={joinRoom}
+                                roomNumber={roomNumber}
+                                enterRoomNumber={enterRoomNumber}
+                                joinError={joinError}
+                            />
+                        }
+                    />
+                    <Route path="about" element={<About socket={socket} />} />
+                    <Route path="rooms" element={<Rooms username={username} />}>
                         <Route
-                            index
+                            path={":roomID"}
                             element={
-                                <Home
-                                    enterUsername={enterUsername}
-                                    enterRoomNumber={enterRoomNumber}
-                                    joinRoom={joinRoom}
-                                    createRoom={createRoom}
-                                />
+                                <Room username={username} socket={socket} />
                             }
                         />
-                        <Route path="createRoom" element={<CreateRoom />} />
-                        <Route path="joinRoom" element={<JoinRoom />} />
-                        <Route path="about" element={<About />} />
-                        <Route path="rooms" element={<Rooms />}>
-                            <Route path={"/" + roomNumber} element={<Room />} />
-                        </Route>
-                        <Route path="*" element={<NoPage />} />
                     </Route>
-                </Routes>
-            </BrowserRouter>
+                    <Route path="*" element={<NoPage />} />
+                </Route>
+            </Routes>
         </>
     );
 }

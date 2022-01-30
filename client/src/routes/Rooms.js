@@ -1,11 +1,11 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 
-const Rooms = () => {
+const Rooms = ({ username }) => {
     return (
         <>
             <h2>Rooms</h2>
-            <Outlet />
+            <Outlet username={username} />
         </>
     );
 };

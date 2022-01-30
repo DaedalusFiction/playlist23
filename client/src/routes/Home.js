@@ -1,18 +1,25 @@
-const Home = ({ enterUsername, enterRoomNumber, joinRoom, createRoom }) => {
+import CreateRoomButton from "../components/CreateRoomButton";
+import JoinRoomButton from "../components/JoinRoomButton";
+import UsernameInput from "../components/UsernameInput";
+
+const Home = ({
+    enterUsername,
+    roomNumber,
+    enterRoomNumber,
+    joinRoom,
+    createRoom,
+    joinError,
+}) => {
     return (
         <>
-            <input
-                type="text"
-                onChange={enterUsername}
-                placeholder="Enter Username"
+            <UsernameInput enterUsername={enterUsername} />
+            <JoinRoomButton
+                joinRoom={joinRoom}
+                roomNumber={roomNumber}
+                enterRoomNumber={enterRoomNumber}
+                joinError={joinError}
             />
-            <input
-                type="text"
-                onChange={enterRoomNumber}
-                placeholder="enter room number"
-            />
-            <button onClick={joinRoom}>Join Room</button>
-            <button onClick={createRoom}>Create Room</button>
+            <CreateRoomButton createRoom={createRoom} />
         </>
     );
 };
