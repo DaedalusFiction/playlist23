@@ -26,7 +26,10 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("message", "a user has connected");
 
     //emits to everyone
-    io.emit("message", "hi everyone");
+
+    socket.on("sendMessage", (message) => {
+        io.emit("chatMessage", message);
+    });
 
     socket.on("disconnect", () => {
         io.emit("message", "a user has left the chat");

@@ -3,8 +3,16 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import socketIOClient from "socket.io-client";
 
+const ENDPOINT = "http://localhost:4001";
+const socket = socketIOClient.connect(ENDPOINT);
+
+socket.on("chatMessage", (chatMessage) => {
+    console.log(chatMessage);
+});
+
 const Room = ({ username }) => {
     const params = useParams();
+
     const [chatMessages, setChatMessages] = useState([
         {
             time: new Date().getTime(),
@@ -14,23 +22,25 @@ const Room = ({ username }) => {
         },
     ]);
 
-    useEffect(() => {
-        const ENDPOINT = "http://localhost:4001";
-        const newSocket = socketIOClient.connect(ENDPOINT);
-
-        newSocket.on("message", (message) => {});
-    }, []);
-
-    useEffect(() => {}, [chatMessages]);
+    useEffect(() => {}, []);
 
     const sendMessage = () => {
         const newMessage = {
             time: new Date().getTime(),
             room: params.roomID,
             user: "dave",
-            message: "hi",
+            message: document.getElementById("chatMessageInput").value,
         };
         setChatMessages([...chatMessages, newMessage]);
+        socket.emit("sendMessage", newMessage);
+
+        document.getElementById("chatMessageInput").value = "";
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.code === "Enter") {
+            sendMessage();
+        }
     };
 
     return (
@@ -50,12 +60,16 @@ const Room = ({ username }) => {
                         );
                     })}
             </div>
+
             <input
                 id="chatMessageInput"
                 type="text"
                 placeholder="Enter Message"
+                onKeyPress={handleKeyPress}
             />
-            <button onClick={sendMessage}>Send</button>
+            <button id="sendButton" onClick={sendMessage}>
+                Send
+            </button>
         </>
     );
 };
