@@ -3,15 +3,16 @@ import { useState, useEffect } from "react";
 import socketIOClient from "socket.io-client";
 import moment from "moment";
 import "moment-timezone";
-const ENDPOINT = "http://localhost:4001";
-const socket = socketIOClient.connect(ENDPOINT);
 
 const Room = ({ username }) => {
     const params = useParams();
+    const ENDPOINT = "http://localhost:4001";
+    const [socket, setSocket] = useState(socketIOClient.connect(ENDPOINT));
 
     const [chatMessages, setChatMessages] = useState([
         {
             time: moment().format("h:mm a"),
+            key: Date.now(),
             room: params.roomID,
             user: username,
             message: `Welcome to room: ${params.roomID}`,
@@ -19,14 +20,27 @@ const Room = ({ username }) => {
     ]);
 
     useEffect(() => {
-        socket.on("chatMessage", (chatMessage) => {
-            setChatMessages([...chatMessages, chatMessage]);
+        socket.emit("joinRoom", params.roomID);
+        return () => {
+            socket.emit("leaveRoom", params.roomID);
+        };
+    }, [params.roomID, socket]);
+
+    useEffect(() => {
+        console.log("adding listeners");
+        socket.on("chatMessage", (message) => {
+            setChatMessages([...chatMessages, message]);
         });
-    }, [chatMessages]);
+        return () => {
+            console.log("listeners removed");
+            socket.removeAllListeners();
+        };
+    }, [chatMessages, socket]);
 
     const sendMessage = () => {
         const newMessage = {
             time: moment().format("h:mm a"),
+            key: Date.now(),
             room: params.roomID,
             user: username,
             message: document.getElementById("chatMessageInput").value,
@@ -51,7 +65,7 @@ const Room = ({ username }) => {
                 {chatMessages &&
                     chatMessages.map((chatMessage, index) => {
                         return (
-                            <p key={chatMessage.time}>
+                            <p key={chatMessage.key}>
                                 {chatMessage.room}
                                 {chatMessage.user}
                                 {chatMessage.message}

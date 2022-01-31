@@ -19,21 +19,25 @@ const io = socketio(server, {
 });
 
 io.on("connection", (socket) => {
-    //emits to the user
-    socket.emit("message", "welcome");
+    socket.on("joinRoom", ({ room }) => {
+        console.log("Joining room");
+        socket.join(room);
+
+        socket.on("sendMessage", (message) => {
+            io.emit("chatMessage", message);
+        });
+        socket.on("leaveRoom", ({ room }) => {
+            console.log("Leaving room");
+            socket.leave(room);
+        });
+        socket.on("disconnect", () => {
+            console.log("disconnected");
+            socket.leave(room);
+        });
+    });
 
     //emits to everyone but the person connecting
-    socket.broadcast.emit("message", "a user has connected");
-
-    //emits to everyone
-
-    socket.on("sendMessage", (message) => {
-        io.emit("chatMessage", message);
-    });
-
-    socket.on("disconnect", () => {
-        io.emit("message", "a user has left the chat");
-    });
+    // socket.broadcast.emit("chatMessage", "a user has connected");
 });
 
 server.listen(PORT, () => {
