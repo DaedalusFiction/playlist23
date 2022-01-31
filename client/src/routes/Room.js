@@ -1,37 +1,37 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import socketIOClient from "socket.io-client";
-
+import moment from "moment";
+import "moment-timezone";
 const ENDPOINT = "http://localhost:4001";
 const socket = socketIOClient.connect(ENDPOINT);
-
-socket.on("chatMessage", (chatMessage) => {
-    console.log(chatMessage);
-});
 
 const Room = ({ username }) => {
     const params = useParams();
 
     const [chatMessages, setChatMessages] = useState([
         {
-            time: new Date().getTime(),
+            time: moment().format("h:mm a"),
             room: params.roomID,
-            user: "dave",
-            message: "hi",
+            user: username,
+            message: `Welcome to room: ${params.roomID}`,
         },
     ]);
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        socket.on("chatMessage", (chatMessage) => {
+            setChatMessages([...chatMessages, chatMessage]);
+        });
+    }, [chatMessages]);
 
     const sendMessage = () => {
         const newMessage = {
-            time: new Date().getTime(),
+            time: moment().format("h:mm a"),
             room: params.roomID,
-            user: "dave",
+            user: username,
             message: document.getElementById("chatMessageInput").value,
         };
-        setChatMessages([...chatMessages, newMessage]);
+
         socket.emit("sendMessage", newMessage);
 
         document.getElementById("chatMessageInput").value = "";
