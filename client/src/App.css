@@ -55,11 +55,19 @@ a {
     margin: 0 auto;
 }
 
+.flex {
+    display: flex;
+    gap: 1rem;
+}
+
 /* Header  */
 
 .header {
+    position: relative;
+    z-index: 1;
     background-color: var(--bg-primary);
     padding: 1.5rem 0;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.1);
 }
 
 .header .container {
@@ -78,4 +86,15 @@ a {
 .header a:hover {
     text-decoration: underline;
     /* TODO: add animated underline */
+}
+
+/* Home */
+
+.home {
+    background-color: var(--bg-primary);
+}
+
+.home .flex {
+    justify-content: center;
+    padding: 20vh 0;
 }

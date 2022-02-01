@@ -19,19 +19,16 @@ const io = socketio(server, {
 });
 
 io.on("connection", (socket) => {
-    socket.on("joinRoom", ({ room }) => {
-        console.log("Joining room");
+    console.log("Connecting");
+    socket.on("joinRoom", (room) => {
         socket.join(room);
-
+        console.log("Joining room");
+        //send message to everyone in joined room
         socket.on("sendMessage", (message) => {
-            io.emit("chatMessage", message);
+            io.in(room).emit("chatMessage", message);
         });
-        socket.on("leaveRoom", ({ room }) => {
-            console.log("Leaving room");
-            socket.leave(room);
-        });
+
         socket.on("disconnect", () => {
-            console.log("disconnected");
             socket.leave(room);
         });
     });

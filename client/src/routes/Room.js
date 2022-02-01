@@ -5,34 +5,34 @@ import moment from "moment";
 import "moment-timezone";
 
 const Room = ({ username }) => {
+    const [userName, setUsername] = useState(username);
     const params = useParams();
     const ENDPOINT = "http://localhost:4001";
+    //socket create as useState element and initialized so that it won't create a new connection every time page rerenders
     const [socket, setSocket] = useState(socketIOClient.connect(ENDPOINT));
 
     const [chatMessages, setChatMessages] = useState([
+        //welcome message
         {
             time: moment().format("h:mm a"),
             key: Date.now(),
             room: params.roomID,
-            user: username,
+            user: userName,
             message: `Welcome to room: ${params.roomID}`,
         },
     ]);
 
     useEffect(() => {
         socket.emit("joinRoom", params.roomID);
-        return () => {
-            socket.emit("leaveRoom", params.roomID);
-        };
     }, [params.roomID, socket]);
 
     useEffect(() => {
-        console.log("adding listeners");
+        //add listener for new chat messages, updates messages
         socket.on("chatMessage", (message) => {
             setChatMessages([...chatMessages, message]);
         });
         return () => {
-            console.log("listeners removed");
+            //clean up listeners
             socket.removeAllListeners();
         };
     }, [chatMessages, socket]);
@@ -42,7 +42,7 @@ const Room = ({ username }) => {
             time: moment().format("h:mm a"),
             key: Date.now(),
             room: params.roomID,
-            user: username,
+            user: userName,
             message: document.getElementById("chatMessageInput").value,
         };
 
