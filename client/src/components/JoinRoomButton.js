@@ -5,7 +5,7 @@ const JoinRoomButton = ({
     joinError,
 }) => {
     return (
-        <>
+        <div>
             <input
                 type="text"
                 onChange={enterRoomNumber}
@@ -16,7 +16,7 @@ const JoinRoomButton = ({
                 <p>Room number must be four digits</p>
             )}
             {joinError && <p>Room Number not found</p>}
-        </>
+        </div>
     );
 };
 

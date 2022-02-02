@@ -1,3 +1,4 @@
+import Bubbles from "../components/Bubbles";
 import CreateRoomButton from "../components/CreateRoomButton";
 import JoinRoomButton from "../components/JoinRoomButton";
 import UsernameInput from "../components/UsernameInput";
@@ -13,9 +14,10 @@ const Home = ({
     return (
         <>
             <main className="home">
+                <Bubbles />
                 <div className="container">
-                    <div className="flex">
-                        <div className="home-left">
+                    <div className="grid">
+                        <div className="home-left flex">
                             <div className="home-buttons">
                                 <UsernameInput enterUsername={enterUsername} />
                                 <p>and</p>
@@ -29,7 +31,7 @@ const Home = ({
                                 <CreateRoomButton createRoom={createRoom} />
                             </div>
                         </div>
-                        <div className="home-right">
+                        <div className="home-right flex">
                             <div className="home-hero">
                                 <p>a simpler way to</p>
                                 <p>share your</p>
