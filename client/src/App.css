@@ -1,10 +1,31 @@
 @import-normalize;
+@import url("https://fonts.googleapis.com/css2?family=Bitter&family=Fira+Sans&family=Titillium+Web:wght@300&display=swap");
 
 :root {
     --bg-primary: #ccffe0;
 
     --fc-primary: rgb(36, 36, 36);
-    --fc-bubble: rgb(255, 61, 61);
+    --fc-light: rgb(117, 117, 117);
+
+    --bg-bubble: rgb(255, 82, 82);
+
+    /* liverwurst color scheme  */
+    --bg-primary: #eeebd0;
+    --bg-btn: #e86252;
+    --bg-btn-hover: #d3584a;
+    --bg-bubble: #e87ea1;
+
+    --bg-primary: #ccff33;
+    --bg-btn: #008000;
+    --bg-btn-hover: #007200;
+    --bg-bubble: #70e000;
+
+    --box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
+    --border-shadow: 0px 5px 10px 2px rgba(0, 0, 0, 0.15);
+    /* --text-shadow: 0.05em 0.05em rgba(0, 0, 0, 0.8); */
+    --ff-bitter: "Bitter", serif;
+    --ff-fira: "Fira Sans", sans-serif;
+    --ff-tit: "Titillium Web", sans-serif;
 }
 
 /* Reset  */
@@ -28,6 +49,8 @@ ul,
 a {
     margin: 0;
     padding: 0;
+    font-family: var(--ff-tit);
+    font-size: 1.35rem;
     font-weight: normal;
     color: var(--fc-primary);
 }
@@ -46,6 +69,35 @@ a {
     text-decoration: none;
 }
 
+input[type="text"] {
+    padding: 0.35em 0.4em;
+}
+
+button {
+    display: none;
+}
+
+.btn {
+    color: white;
+
+    width: fit-content;
+    background-color: var(--bg-btn);
+    padding: 0.35em 0.85em;
+    border: none;
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.btn:hover {
+    background-color: var(--bg-btn-hover);
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
 /* variables  */
 
 /* Utilities  */
@@ -56,15 +108,7 @@ a {
     margin: 0 auto;
 }
 
-.flex {
-    display: flex;
-    gap: 1rem;
-}
-
-.grid {
-    display: grid;
-    gap: 1rem;
-}
+/* Components  */
 
 /* Header  */
 
@@ -72,7 +116,7 @@ a {
     position: relative;
     background-color: var(--bg-primary);
     padding: 1.5rem 0;
-    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--border-shadow);
     z-index: 2;
 }
 
@@ -101,21 +145,24 @@ a {
     overflow: hidden;
 }
 
+.home .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 35vh 0;
+    width: 80%;
+}
+
 .home-left,
 .home-right {
     z-index: 5;
-}
-
-.home .grid {
-    grid-template-columns: 1fr 1fr;
-    padding: 35vh 0;
+    margin: 0 auto;
 }
 
 .home .grid > * {
     width: 400px;
 }
 
-.home .flex {
+.home {
     justify-content: center;
     align-items: center;
 }
@@ -126,12 +173,16 @@ a {
     justify-content: center;
 }
 
+.home-buttons p + * {
+    margin: 0 auto;
+}
+
 .home-buttons p {
     text-align: center;
 }
 
-.home-buttons * + * {
-    margin-top: 0.3em;
+.home-buttons p {
+    margin: 0.3em auto;
 }
 
 .home-buttons input {
@@ -139,9 +190,116 @@ a {
     margin-right: 1rem;
 }
 
-.home-buttons button {
+/* .home-buttons button {
     width: fit-content;
-    margin-left: auto;
+    margin: 0 auto;
+} */
+
+.home-hero :nth-child(1) {
+    margin-left: 1em;
+}
+
+.home-hero p {
+    background-color: inherit;
+    mix-blend-mode: difference;
+}
+
+.home-hero p + p {
+    font-size: 3rem;
+}
+
+.home-hero p + p + p {
+    margin-left: 1em;
+    font-size: 5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Join Room page */
+
+.join-room,
+.create-room {
+    display: flex;
+    justify-content: center;
+    margin: 40vh 0;
+    gap: 1em;
+}
+
+.create-room .container {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
+
+.join-room .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.join-room-button {
+    display: flex;
+    gap: 1em;
+}
+
+/* Room  */
+.room {
+    border: 1px solid green;
+    padding: 1em;
+}
+.room .container {
+    display: grid;
+    gap: 1em;
+    grid-template-columns: 3fr 2fr;
+    padding: 2rem;
+    border: 1px solid red;
+    max-width: 900px;
+}
+
+.song-box {
+    margin: 0.5em 0;
+}
+
+.song-box-info {
+    display: flex;
+    gap: 0.5em;
+}
+
+.song-box-content {
+    display: flex;
+    justify-content: space-between;
+}
+.control-panel,
+.chat-box {
+    height: 30vh;
+    border: 1px solid blue;
+    margin-bottom: 1em;
+    overflow-y: auto;
+}
+
+.chat-input {
+    display: flex;
+    justify-content: space-between;
+}
+.chat-message {
+    padding: 0 0.5em;
+}
+
+.chat-message > p {
+    font-size: 1rem;
+    max-width: 320px;
+}
+
+.chat-message-info {
+    display: flex;
+    gap: 0.5em;
+}
+
+.chat-message-info p,
+.song-box-info p {
+    font-size: 0.7rem;
+    color: var(--fc-light);
 }
 
 /* Bubbles  */
@@ -152,9 +310,9 @@ a {
 
 .bubbles > * {
     position: absolute;
-    background-color: var(--fc-bubble);
+    background-color: var(--bg-bubble);
     border-radius: 100%;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--box-shadow);
     z-index: 1;
     animation: animateBubbles linear infinite;
 }

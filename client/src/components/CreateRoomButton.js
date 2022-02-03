@@ -1,5 +1,9 @@
 const CreateRoomButton = ({ createRoom }) => {
-    return <button onClick={createRoom}>Create Room</button>;
+    return (
+        <label className="btn">
+            <button onClick={createRoom} /> Create Room
+        </label>
+    );
 };
 
 export default CreateRoomButton;

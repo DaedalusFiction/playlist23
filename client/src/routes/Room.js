@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import socketIOClient from "socket.io-client";
 import moment from "moment";
 import "moment-timezone";
+import ChatMessage from "../components/ChatMessage";
+import SongBox from "../components/SongBox";
 
 const Room = ({ username }) => {
     const [userName, setUsername] = useState(username);
@@ -22,6 +24,10 @@ const Room = ({ username }) => {
         },
     ]);
 
+    const [songs, setSongs] = useState([
+        { title: "Ya Hey", artist: "Vampire Weekend", duration: 350 },
+    ]);
+
     useEffect(() => {
         socket.emit("joinRoom", params.roomID);
     }, [params.roomID, socket]);
@@ -30,6 +36,8 @@ const Room = ({ username }) => {
         //add listener for new chat messages, updates messages
         socket.on("chatMessage", (message) => {
             setChatMessages([...chatMessages, message]);
+            let chatbox = document.getElementById("chat-box");
+            chatbox.scrollTop = chatbox.scrollHeight;
         });
         return () => {
             //clean up listeners
@@ -38,17 +46,20 @@ const Room = ({ username }) => {
     }, [chatMessages, socket]);
 
     const sendMessage = () => {
-        const newMessage = {
-            time: moment().format("h:mm a"),
-            key: Date.now(),
-            room: params.roomID,
-            user: userName,
-            message: document.getElementById("chatMessageInput").value,
-        };
+        const msg = document.getElementById("chatMessageInput").value;
+        if (msg !== "") {
+            const newMessage = {
+                time: moment().format("h:mm a"),
+                key: Date.now(),
+                room: params.roomID,
+                user: userName,
+                message: msg,
+            };
 
-        socket.emit("sendMessage", newMessage);
+            socket.emit("sendMessage", newMessage);
 
-        document.getElementById("chatMessageInput").value = "";
+            document.getElementById("chatMessageInput").value = "";
+        }
     };
 
     const handleKeyPress = (e) => {
@@ -59,31 +70,38 @@ const Room = ({ username }) => {
 
     return (
         <>
-            <div>Music Room: {params.roomID}</div>
-            <p>username: {username}</p>
-            <div id="chatMessages">
-                {chatMessages &&
-                    chatMessages.map((chatMessage, index) => {
-                        return (
-                            <p key={chatMessage.key}>
-                                {chatMessage.room}
-                                {chatMessage.user}
-                                {chatMessage.message}
-                                {chatMessage.time}
-                            </p>
-                        );
-                    })}
+            <div className="room">
+                <div className="container">
+                    <div className="song-panel">
+                        <div className="control-panel">
+                            <h1>Room: {params.roomID}</h1>
+                            {songs.map((song) => {
+                                return <SongBox song={song} />;
+                            })}
+                        </div>
+                        <div className="react-player">player</div>
+                    </div>
+                    <div className="chat-panel">
+                        <div className="chat-box" id="chat-box">
+                            {chatMessages.map((message) => {
+                                return <ChatMessage message={message} />;
+                            })}
+                        </div>
+                        <div className="chat-input">
+                            <input
+                                id="chatMessageInput"
+                                type="text"
+                                placeholder="Enter Message"
+                                onKeyPress={handleKeyPress}
+                            />
+                            <label className="btn">
+                                <button id="sendButton" onClick={sendMessage} />
+                                Send
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <input
-                id="chatMessageInput"
-                type="text"
-                placeholder="Enter Message"
-                onKeyPress={handleKeyPress}
-            />
-            <button id="sendButton" onClick={sendMessage}>
-                Send
-            </button>
         </>
     );
 };

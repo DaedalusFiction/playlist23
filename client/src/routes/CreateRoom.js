@@ -3,10 +3,12 @@ import UsernameInput from "../components/UsernameInput";
 
 const CreateRoom = ({ createRoom, enterUsername }) => {
     return (
-        <>
-            <UsernameInput enterUsername={enterUsername} />
-            <CreateRoomButton createRoom={createRoom} />
-        </>
+        <div className="create-room">
+            <div className="container">
+                <UsernameInput enterUsername={enterUsername} />
+                <CreateRoomButton createRoom={createRoom} />
+            </div>
+        </div>
     );
 };
 
