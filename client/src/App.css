@@ -270,6 +270,10 @@ button {
     display: flex;
     justify-content: space-between;
 }
+
+.audio-player {
+    width: 100%;
+}
 .control-panel,
 .chat-box {
     height: 30vh;

@@ -19,7 +19,6 @@ const io = socketio(server, {
 });
 
 io.on("connection", (socket) => {
-    console.log("Connecting");
     socket.on("joinRoom", (room) => {
         socket.join(room);
         console.log("Joining room");

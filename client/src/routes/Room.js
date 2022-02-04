@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import socketIOClient from "socket.io-client";
+import ReactAudioPlayer from "react-audio-player";
+import ReactDOM from "react-dom";
 import moment from "moment";
 import "moment-timezone";
 import ChatMessage from "../components/ChatMessage";
@@ -26,6 +28,8 @@ const Room = ({ username }) => {
 
     const [songs, setSongs] = useState([
         { title: "Ya Hey", artist: "Vampire Weekend", duration: 350 },
+        { title: "Monument", artist: "Royksopp", duration: 350 },
+        { title: "Heavy Metal Drummer", artist: "Wilco", duration: 350 },
     ]);
 
     useEffect(() => {
@@ -74,12 +78,17 @@ const Room = ({ username }) => {
                 <div className="container">
                     <div className="song-panel">
                         <div className="control-panel">
-                            <h1>Room: {params.roomID}</h1>
-                            {songs.map((song) => {
-                                return <SongBox song={song} />;
+                            {songs.map((song, index) => {
+                                return <SongBox key={index} song={song} />;
                             })}
                         </div>
-                        <div className="react-player">player</div>
+
+                        <ReactAudioPlayer
+                            className="audio-player"
+                            src="../Umber.mp3"
+                            autoplay
+                            controls
+                        />
                     </div>
                     <div className="chat-panel">
                         <div className="chat-box" id="chat-box">
