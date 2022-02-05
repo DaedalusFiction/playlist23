@@ -30,6 +30,7 @@ const Room = ({ username }) => {
     ]);
 
     const [songs, setSongs] = useState([]);
+    const [nowPlaying, setNowPlaying] = useState(null);
 
     useEffect(() => {
         socket.emit("joinRoom", params.roomID);
@@ -82,6 +83,11 @@ const Room = ({ username }) => {
         }
     };
 
+    const selectSong = (e) => {
+        console.log(songs[e.target.id].url);
+        setNowPlaying(songs[e.target.id].url);
+    };
+
     return (
         <>
             <div className="room">
@@ -89,7 +95,14 @@ const Room = ({ username }) => {
                     <div className="song-panel">
                         <div className="control-panel">
                             {songs.map((song, index) => {
-                                return <SongBox key={index} song={song} />;
+                                return (
+                                    <SongBox
+                                        key={index}
+                                        index={index}
+                                        song={song}
+                                        onClick={selectSong}
+                                    />
+                                );
                             })}
                         </div>
                         <div className="song-controls">
@@ -100,7 +113,7 @@ const Room = ({ username }) => {
                             />
                             <ReactAudioPlayer
                                 className="audio-player"
-                                src="../Umber.mp3"
+                                src={nowPlaying}
                                 autoplay
                                 controls
                             />

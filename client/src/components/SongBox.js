@@ -1,6 +1,6 @@
 import React from "react";
 
-const SongBox = ({ song }) => {
+const SongBox = ({ song, onClick, index }) => {
     return (
         <div className="song-box">
             <div className="song-box-info">
@@ -8,7 +8,9 @@ const SongBox = ({ song }) => {
             </div>
             <div className="song-box-content">
                 <p>{song.title}</p>
-                <p>play</p>
+                <p id={index} onClick={onClick}>
+                    play
+                </p>
             </div>
         </div>
     );

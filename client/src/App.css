@@ -272,6 +272,7 @@ button {
 }
 .song-controls {
     display: flex;
+    flex-direction: column;
 }
 .audio-player {
     width: 100%;
