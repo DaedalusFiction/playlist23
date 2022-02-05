@@ -1,11 +1,9 @@
 import CreateRoomButton from "../components/CreateRoomButton";
-import UsernameInput from "../components/UsernameInput";
 
-const CreateRoom = ({ createRoom, enterUsername }) => {
+const CreateRoom = ({ createRoom }) => {
     return (
         <div className="create-room">
             <div className="container">
-                <UsernameInput enterUsername={enterUsername} />
                 <CreateRoomButton createRoom={createRoom} />
             </div>
         </div>

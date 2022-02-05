@@ -7,7 +7,7 @@ const SongBox = ({ song, onClick, index }) => {
                 <p>{song.artist}</p>
             </div>
             <div className="song-box-content">
-                <p>{song.title}</p>
+                <p>{song.title.replace(".mp3", "")}</p>
                 <p id={index} onClick={onClick}>
                     play
                 </p>

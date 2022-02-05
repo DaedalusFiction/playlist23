@@ -7,10 +7,12 @@ import Rooms from "./routes/Rooms";
 import Room from "./routes/Room";
 import About from "./routes/About";
 import NoPage from "./routes/NoPage";
+import Bubbles from "./components/Bubbles";
 
 function App() {
     return (
         <>
+            <Bubbles />
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />

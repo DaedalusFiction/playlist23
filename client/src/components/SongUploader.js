@@ -21,7 +21,7 @@ const SongUploader = ({ username, roomID, socket }) => {
                     getDownloadURL(uploadTask.snapshot.ref).then(
                         async (downloadURL) => {
                             const newSong = {
-                                artist: "bill",
+                                artist: username,
                                 title: e.target.files[0].name,
                                 url: downloadURL,
                             };
@@ -46,7 +46,8 @@ const SongUploader = ({ username, roomID, socket }) => {
     return (
         <div className="song-uploader">
             <label className="btn">
-                <input type="file" onChange={uploadFile} accept="audio/*" />+
+                <input type="file" onChange={uploadFile} accept="audio/*" />
+                add song
             </label>
         </div>
     );

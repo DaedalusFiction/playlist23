@@ -6,7 +6,6 @@ const Home = () => {
     return (
         <>
             <main className="home">
-                <Bubbles />
                 <div className="container">
                     <div className="home-left flex">
                         <div className="home-buttons">

@@ -10,6 +10,7 @@ import ChatMessage from "../components/ChatMessage";
 import SongBox from "../components/SongBox";
 import SongUploader from "../components/SongUploader";
 import { getDoc, doc } from "firebase/firestore";
+import Bubbles from "../components/Bubbles";
 
 const Room = () => {
     const [username, setusername] = useState("anonymous");
@@ -87,7 +88,7 @@ const Room = () => {
 
     const selectSong = (e) => {
         console.log(songs[e.target.id].url);
-        setNowPlaying(songs[e.target.id].url);
+        setNowPlaying(songs[e.target.id]);
     };
 
     return (
@@ -95,6 +96,7 @@ const Room = () => {
             <div className="room">
                 <div className="container">
                     <div className="song-panel">
+                        <p>room: {params.roomID}</p>
                         <div className="control-panel" id="control-panel">
                             {songs.map((song, index) => {
                                 return (
@@ -113,15 +115,22 @@ const Room = () => {
                                 roomID={params.roomID}
                                 socket={socket}
                             />
-                            <ReactAudioPlayer
-                                className="audio-player"
-                                src={nowPlaying}
-                                autoplay
-                                controls
-                            />
+                            {nowPlaying && (
+                                <div>
+                                    <p>now playing: {nowPlaying.title}</p>
+                                    <div>
+                                        <ReactAudioPlayer
+                                            src={nowPlaying.url}
+                                            autoplay
+                                            controls
+                                        />
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="chat-panel">
+                        <p>username: {username}</p>
                         <div className="chat-box" id="chat-box">
                             {chatMessages.map((message, index) => {
                                 return (
@@ -136,7 +145,7 @@ const Room = () => {
                             <input
                                 id="chatMessageInput"
                                 type="text"
-                                placeholder="Enter Message"
+                                placeholder="Enter Message..."
                                 onKeyPress={handleKeyPress}
                             />
                             <label className="btn">

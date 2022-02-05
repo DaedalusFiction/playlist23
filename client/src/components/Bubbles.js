@@ -1,8 +1,4 @@
-import React from "react";
-import { useState } from "react";
-
 const Bubbles = () => {
-    const bubbles = 3;
     return (
         <ul className="bubbles">
             <li className="bubble-1"></li>

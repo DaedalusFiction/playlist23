@@ -37,6 +37,7 @@ html {
 
 * {
     box-sizing: border-box;
+    z-index: 9;
 }
 
 body,
@@ -71,6 +72,9 @@ a {
 
 input[type="text"] {
     padding: 0.35em 0.4em;
+    box-shadow: var(--box-shadow);
+    border: none;
+    border-radius: 5px;
 }
 
 input[type="file"] {
@@ -121,7 +125,6 @@ button {
     background-color: var(--bg-primary);
     padding: 1.5rem 0;
     box-shadow: var(--border-shadow);
-    z-index: 2;
 }
 
 .header .container {
@@ -153,17 +156,11 @@ button {
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 35vh 0;
-    width: 80%;
 }
 
 .home-left,
 .home-right {
-    z-index: 5;
     margin: 0 auto;
-}
-
-.home .grid > * {
-    width: 400px;
 }
 
 .home {
@@ -193,11 +190,6 @@ button {
     width: fit-content;
     margin-right: 1rem;
 }
-
-/* .home-buttons button {
-    width: fit-content;
-    margin: 0 auto;
-} */
 
 .home-hero :nth-child(1) {
     margin-left: 1em;
@@ -249,16 +241,16 @@ button {
 
 /* Room  */
 .room {
-    border: 1px solid green;
-    padding: 1em;
+    padding: 18vh 0;
 }
 .room .container {
     display: grid;
     gap: 1em;
     grid-template-columns: 3fr 2fr;
     padding: 2rem;
-    border: 1px solid red;
-    max-width: 900px;
+    background-color: var(--bg-primary);
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
 }
 
 .song-box {
@@ -285,9 +277,12 @@ button {
 .control-panel,
 .chat-box {
     height: 30vh;
-    border: 1px solid blue;
+    padding: 0.5em;
+    background-color: white;
     margin-bottom: 1em;
     overflow-y: auto;
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
 }
 
 .chat-input {
@@ -318,7 +313,7 @@ button {
 
 /* Bubbles  */
 
-.bubbles {
+.room {
     position: relative;
 }
 
