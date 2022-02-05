@@ -73,6 +73,10 @@ input[type="text"] {
     padding: 0.35em 0.4em;
 }
 
+input[type="file"] {
+    display: none;
+}
+
 button {
     display: none;
 }
@@ -272,7 +276,8 @@ button {
 }
 .song-controls {
     display: flex;
-    flex-direction: column;
+    gap: 1em;
+    align-items: center;
 }
 .audio-player {
     width: 100%;
@@ -287,7 +292,9 @@ button {
 
 .chat-input {
     display: flex;
+    gap: 1em;
     justify-content: space-between;
+    align-items: center;
 }
 .chat-message {
     padding: 0 0.5em;

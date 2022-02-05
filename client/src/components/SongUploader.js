@@ -1,6 +1,6 @@
 import React from "react";
 import { db, storage } from "../firebase";
-import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
 import moment from "moment";
 
@@ -47,7 +47,9 @@ const SongUploader = ({ username, roomID, socket }) => {
     };
     return (
         <div className="song-uploader">
-            <input type="file" onChange={uploadFile} accept="audio/*" />
+            <label className="btn">
+                <input type="file" onChange={uploadFile} accept="audio/*" />+
+            </label>
         </div>
     );
 };

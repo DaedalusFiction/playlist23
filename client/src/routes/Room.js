@@ -3,16 +3,16 @@ import { useState, useEffect } from "react";
 import { db } from "../firebase";
 import socketIOClient from "socket.io-client";
 import ReactAudioPlayer from "react-audio-player";
-import ReactDOM from "react-dom";
+
 import moment from "moment";
 import "moment-timezone";
 import ChatMessage from "../components/ChatMessage";
 import SongBox from "../components/SongBox";
 import SongUploader from "../components/SongUploader";
-import { collection, getDoc, getDocs, doc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 
-const Room = ({ username }) => {
-    const [userName, setUsername] = useState(username);
+const Room = () => {
+    const [username, setusername] = useState("anonymous");
     const params = useParams();
     const ENDPOINT = "http://localhost:4001";
     //socket create as useState element and initialized so that it won't create a new connection every time page rerenders
@@ -24,7 +24,7 @@ const Room = ({ username }) => {
             time: moment().format("h:mm a"),
             key: Date.now(),
             room: params.roomID,
-            user: userName,
+            user: username,
             message: `Welcome to room: ${params.roomID}`,
         },
     ]);
@@ -42,6 +42,8 @@ const Room = ({ username }) => {
             const songlistTask = await getDoc(roomRef);
             if (songlistTask.exists()) {
                 setSongs(songlistTask.data().songlist);
+                let songbox = document.getElementById("control-panel");
+                songbox.scrollTop = songbox.scrollHeight;
             }
         }
         getsonglist();
@@ -67,7 +69,7 @@ const Room = ({ username }) => {
                 time: moment().format("h:mm a"),
                 key: Date.now(),
                 room: params.roomID,
-                user: userName,
+                user: username,
                 message: msg,
             };
 
@@ -93,7 +95,7 @@ const Room = ({ username }) => {
             <div className="room">
                 <div className="container">
                     <div className="song-panel">
-                        <div className="control-panel">
+                        <div className="control-panel" id="control-panel">
                             {songs.map((song, index) => {
                                 return (
                                     <SongBox
