@@ -14,9 +14,7 @@ const SongUploader = ({ username, roomID, socket }) => {
             const uploadTask = uploadBytesResumable(storageRef, selected);
             uploadTask.on(
                 "state_changed",
-                (snapshot) => {
-                    //to show upload progress as percentage
-                },
+                (snapshot) => {},
                 (error) => {},
                 () => {
                     // creates firestore database entry
