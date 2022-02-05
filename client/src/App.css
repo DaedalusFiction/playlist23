@@ -270,7 +270,9 @@ button {
     display: flex;
     justify-content: space-between;
 }
-
+.song-controls {
+    display: flex;
+}
 .audio-player {
     width: 100%;
 }

@@ -7,9 +7,7 @@ const SongBox = ({ song }) => {
                 <p>{song.artist}</p>
             </div>
             <div className="song-box-content">
-                <p>
-                    {song.title} - {song.duration}
-                </p>
+                <p>{song.title}</p>
                 <p>play</p>
             </div>
         </div>

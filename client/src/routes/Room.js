@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { db } from "../firebase";
 import socketIOClient from "socket.io-client";
 import ReactAudioPlayer from "react-audio-player";
 import ReactDOM from "react-dom";
@@ -7,6 +8,8 @@ import moment from "moment";
 import "moment-timezone";
 import ChatMessage from "../components/ChatMessage";
 import SongBox from "../components/SongBox";
+import SongUploader from "../components/SongUploader";
+import { collection, getDoc, getDocs, doc } from "firebase/firestore";
 
 const Room = ({ username }) => {
     const [userName, setUsername] = useState(username);
@@ -26,15 +29,22 @@ const Room = ({ username }) => {
         },
     ]);
 
-    const [songs, setSongs] = useState([
-        { title: "Ya Hey", artist: "Vampire Weekend", duration: 350 },
-        { title: "Monument", artist: "Royksopp", duration: 350 },
-        { title: "Heavy Metal Drummer", artist: "Wilco", duration: 350 },
-    ]);
+    const [songs, setSongs] = useState([]);
 
     useEffect(() => {
         socket.emit("joinRoom", params.roomID);
     }, [params.roomID, socket]);
+
+    useEffect(() => {
+        async function getsonglist() {
+            const roomRef = doc(db, "rooms", params.roomID);
+            const songlistTask = await getDoc(roomRef);
+            if (songlistTask.exists()) {
+                setSongs(songlistTask.data().songlist);
+            }
+        }
+        getsonglist();
+    }, [params.roomID, socket, chatMessages]);
 
     useEffect(() => {
         //add listener for new chat messages, updates messages
@@ -82,18 +92,29 @@ const Room = ({ username }) => {
                                 return <SongBox key={index} song={song} />;
                             })}
                         </div>
-
-                        <ReactAudioPlayer
-                            className="audio-player"
-                            src="../Umber.mp3"
-                            autoplay
-                            controls
-                        />
+                        <div className="song-controls">
+                            <SongUploader
+                                username={username}
+                                roomID={params.roomID}
+                                socket={socket}
+                            />
+                            <ReactAudioPlayer
+                                className="audio-player"
+                                src="../Umber.mp3"
+                                autoplay
+                                controls
+                            />
+                        </div>
                     </div>
                     <div className="chat-panel">
                         <div className="chat-box" id="chat-box">
-                            {chatMessages.map((message) => {
-                                return <ChatMessage message={message} />;
+                            {chatMessages.map((message, index) => {
+                                return (
+                                    <ChatMessage
+                                        key={index}
+                                        message={message}
+                                    />
+                                );
                             })}
                         </div>
                         <div className="chat-input">
