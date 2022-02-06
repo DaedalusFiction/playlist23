@@ -27,6 +27,10 @@ io.on("connection", (socket) => {
             io.in(room).emit("chatMessage", message);
         });
 
+        socket.on("playSong", (song) => {
+            io.in(room).emit("playSong", song);
+        });
+
         socket.on("disconnect", () => {
             socket.leave(room);
         });

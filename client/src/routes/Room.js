@@ -57,6 +57,13 @@ const Room = () => {
             let chatbox = document.getElementById("chat-box");
             chatbox.scrollTop = chatbox.scrollHeight;
         });
+
+        socket.on("playSong", (song) => {
+            const player = document.getElementById("reactAudioPlayer");
+            setNowPlaying(song.song);
+            player.currentTime = song.time;
+            player.play();
+        });
         return () => {
             //clean up listeners
             socket.removeAllListeners();
@@ -80,6 +87,16 @@ const Room = () => {
         }
     };
 
+    const playSong = () => {
+        const player = document.getElementById("reactAudioPlayer");
+        const currentTime = player.currentTime;
+
+        socket.emit("playSong", {
+            song: nowPlaying,
+            time: currentTime,
+        });
+    };
+
     const handleKeyPress = (e) => {
         if (e.code === "Enter") {
             sendMessage();
@@ -89,6 +106,12 @@ const Room = () => {
     const selectSong = (e) => {
         console.log(songs[e.target.id].url);
         setNowPlaying(songs[e.target.id]);
+    };
+
+    const pauseSong = (e) => {
+        var vid = document.getElementById("reactAudioPlayer");
+        vid.currentTime = 5;
+        console.log("Pause");
     };
 
     return (
@@ -120,6 +143,7 @@ const Room = () => {
                                     <p>now playing: {nowPlaying.title}</p>
                                     <div>
                                         <ReactAudioPlayer
+                                            id="reactAudioPlayer"
                                             src={nowPlaying.url}
                                             autoplay
                                             controls
@@ -145,12 +169,20 @@ const Room = () => {
                             <input
                                 id="chatMessageInput"
                                 type="text"
-                                placeholder="Enter Message..."
+                                placeholder="enter message..."
                                 onKeyPress={handleKeyPress}
                             />
                             <label className="btn">
                                 <button id="sendButton" onClick={sendMessage} />
-                                Send
+                                send
+                            </label>
+                            <label className="btn">
+                                <button id="pause" onClick={pauseSong} />
+                                pause
+                            </label>
+                            <label className="btn">
+                                <button id="play" onClick={playSong} />
+                                play
                             </label>
                         </div>
                     </div>

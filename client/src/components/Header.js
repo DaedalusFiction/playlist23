@@ -5,18 +5,18 @@ const Header = () => {
         <div className="header">
             <div className="container">
                 <div>
-                    <Link to="/">Playlist: 23</Link>
+                    <Link to="/">playlist: 23</Link>
                 </div>
                 <nav>
                     <ul>
                         <li>
-                            <Link to="/joinRoom">Join a Room</Link>
+                            <Link to="/joinRoom">join a room</Link>
                         </li>
                         <li>
-                            <Link to="/createRoom">Create a Room</Link>
+                            <Link to="/createRoom">create a room</Link>
                         </li>
                         <li>
-                            <Link to="/about">About</Link>
+                            <Link to="/about">about</Link>
                         </li>
                     </ul>
                 </nav>
