@@ -57,6 +57,10 @@ const Room = () => {
             chatbox.scrollTop = chatbox.scrollHeight;
         });
 
+        socket.on("addSong", (song) => {
+            setSongs([...songs, song]);
+        });
+
         socket.on("playSong", (song) => {
             const player = document.getElementById("reactAudioPlayer");
             setNowPlaying(song.song);
@@ -72,7 +76,7 @@ const Room = () => {
             //clean up listeners
             socket.removeAllListeners();
         };
-    }, [chatMessages, socket, player]);
+    }, [chatMessages, socket, player, songs]);
 
     useEffect(() => {
         //sets focus to chat box on page load

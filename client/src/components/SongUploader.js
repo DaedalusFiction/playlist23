@@ -37,6 +37,7 @@ const SongUploader = ({ username, roomID, socket }) => {
                                 message: "new song uploaded",
                             };
                             socket.emit("sendMessage", newMessage);
+                            socket.emit("addSong", newSong);
                         }
                     );
                 }
