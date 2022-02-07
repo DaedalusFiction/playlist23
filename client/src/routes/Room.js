@@ -58,7 +58,7 @@ const Room = () => {
         });
 
         socket.on("addSong", (song) => {
-            setSongs([...songs, song]);
+            console.log("song added");
         });
 
         socket.on("playSong", (song) => {

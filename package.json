@@ -4,8 +4,8 @@
     "description": "playlist23 server",
     "main": "index.js",
     "scripts": {
-        "start": "node server",
-        "dev": "nodemon server",
+        "start": "node index.js",
+        "dev": "nodemon index.js",
         "build": "cd client && npm install && npm run build"
     },
     "engines": {
