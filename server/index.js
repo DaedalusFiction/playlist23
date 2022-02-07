@@ -18,6 +18,8 @@ const io = socketio(server, {
     },
 });
 
+app.use(express.static(path.resolve(__dirname, "../client/build")));
+
 io.on("connection", (socket) => {
     socket.on("joinRoom", (room) => {
         socket.join(room);
@@ -42,9 +44,6 @@ io.on("connection", (socket) => {
             socket.leave(room);
         });
     });
-
-    //emits to everyone but the person connecting
-    // socket.broadcast.emit("chatMessage", "a user has connected");
 });
 
 server.listen(PORT, () => {
