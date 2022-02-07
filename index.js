@@ -14,7 +14,7 @@ const socketio = require("socket.io");
 
 const io = socketio(server, {
     cors: {
-        origin: "https://playlist23.herokuapp.com/", //may need to change when deploying
+        origin: "playlist23.herokuapp.com/", //may need to change when deploying
         methods: ["GET", "POST"],
     },
 });
