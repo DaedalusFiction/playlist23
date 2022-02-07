@@ -8,13 +8,13 @@ app.use(cors());
 
 const server = http.createServer(app);
 
-const PORT = 4001 || process.env.PORT;
+const PORT = process.env.PORT || 4001;
 
 const socketio = require("socket.io");
 
 const io = socketio(server, {
     cors: {
-        origin: "http://localhost:3000", //may need to change when deploying
+        origin: "https://playlist23.herokuapp.com/", //may need to change when deploying
         methods: ["GET", "POST"],
     },
 });
