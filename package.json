@@ -8,6 +8,9 @@
         "dev": "nodemon server",
         "build": "cd client && npm install && npm run build"
     },
+    "engines": {
+        "node": "14.17.6"
+    },
     "author": "David Sorensen",
     "license": "ISC",
     "dependencies": {
