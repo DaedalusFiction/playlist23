@@ -31,6 +31,10 @@ io.on("connection", (socket) => {
             io.in(room).emit("playSong", song);
         });
 
+        socket.on("pauseSong", (pause) => {
+            io.in(room).emit("pauseSong", pause);
+        });
+
         socket.on("disconnect", () => {
             socket.leave(room);
         });

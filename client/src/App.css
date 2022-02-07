@@ -9,12 +9,6 @@
 
     --bg-bubble: rgb(255, 82, 82);
 
-    /* liverwurst color scheme  */
-    --bg-primary: #eeebd0;
-    --bg-btn: #e86252;
-    --bg-btn-hover: #d3584a;
-    --bg-bubble: #e87ea1;
-
     --bg-primary: #ccff33;
     --bg-btn: #008000;
     --bg-btn-hover: #007200;
@@ -34,6 +28,7 @@
 html {
     box-sizing: border-box;
     font-size: 16px;
+    position: relative;
 }
 
 * {
@@ -49,11 +44,13 @@ h3,
 p,
 ol,
 ul,
-a {
+a,
+input,
+label {
     margin: 0;
     padding: 0;
     font-family: var(--ff-tit);
-    font-size: 1rem;
+    font-size: 1.15rem;
     font-weight: normal;
     color: var(--fc-primary);
 }
@@ -73,13 +70,15 @@ a {
 }
 
 input[type="text"] {
-    padding: 0.35em 0.4em;
+    padding-left: 0.4em;
     background-color: var(--bg-gray);
     box-shadow: var(--box-shadow);
     border: none;
     border-radius: 5px;
     transition: 0.2s;
+    line-height: 1;
 }
+
 input[type="text"]:focus {
     background-color: white;
     outline: none;
@@ -93,9 +92,16 @@ button {
     display: none;
 }
 
+audio {
+    width: 100%;
+}
+
+audio:focus {
+    border: none;
+}
+
 .btn {
     color: white;
-
     width: fit-content;
     background-color: var(--bg-btn);
     padding: 0.35em 0.85em;
@@ -129,7 +135,7 @@ button {
 /* Header  */
 
 .header {
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     width: 100vw;
@@ -148,7 +154,7 @@ button {
 }
 
 .header li {
-    margin: 0 2em;
+    margin-left: 2vw;
 }
 
 .header a:hover {
@@ -160,24 +166,20 @@ button {
 
 .home {
     background-color: var(--bg-primary);
+    height: calc(100vh - 69.15px);
     overflow: hidden;
 }
 
 .home .container {
+    height: 100%;
     display: grid;
     align-items: center;
     grid-template-columns: 1fr 1fr;
-    height: 100vh;
 }
 
 .home-left,
 .home-right {
     margin: 0 auto;
-}
-
-.home {
-    justify-content: center;
-    align-items: center;
 }
 
 .home-buttons {
@@ -200,7 +202,6 @@ button {
 
 .home-buttons input {
     width: fit-content;
-    margin-right: 1rem;
 }
 
 .home-hero :nth-child(1) {
@@ -217,7 +218,7 @@ button {
 }
 
 .home-hero p + p + p {
-    margin-left: 1em;
+    margin-left: 10vw;
     font-size: 5rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -226,15 +227,17 @@ button {
 /* Join Room page */
 
 .join-room,
-.create-room {
+.create-room,
+.about-room {
     display: flex;
-    height: 100vh;
+    height: calc(100vh - 69.15px);
     justify-content: center;
     align-items: center;
     gap: 1em;
 }
 
-.create-room .container {
+.create-room .container,
+.about-room .container {
     display: flex;
     justify-content: center;
     gap: 1em;
@@ -252,18 +255,51 @@ button {
     gap: 1em;
 }
 
+.join-room-button input {
+    transform: translateY(-2px);
+}
+
 /* Room  */
+
 .room {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
 }
-.room .container {
+
+.room-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.room-info > div {
+    display: flex;
+}
+
+.room-info input {
+    font-size: 1rem;
+    display: inline-block;
+    width: 40%;
+}
+
+.room-info p {
+    display: inline-block;
+    font-size: 1rem;
+    padding: 1em 0;
+}
+
+.room-info input,
+.room-info input:focus {
+    margin-right: auto;
+    background-color: inherit;
+    box-shadow: none;
+}
+
+.room-content {
     display: grid;
     gap: 1em;
     grid-template-columns: 3fr 2fr;
-    padding: 0 1rem 1rem 1rem;
+    padding: 1rem;
     background-color: var(--bg-primary);
     border-radius: 5px;
     box-shadow: var(--box-shadow);
@@ -283,6 +319,18 @@ button {
 .song-box:hover {
     background-color: var(--bg-gray);
 }
+.song-box {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+.song-box-overlay {
+    position: absolute;
+    z-index: 3;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}
 
 .song-box-info {
     display: flex;
@@ -293,15 +341,14 @@ button {
     display: flex;
     justify-content: space-between;
 }
+
 .song-controls {
     display: flex;
-    gap: 1em;
+    justify-content: center;
     align-items: center;
-}
-
-.song-controls p {
-    font-size: 1rem;
-    color: var(--fc-light);
+    flex-wrap: wrap;
+    gap: 1em;
+    margin: 0.5em 0;
 }
 
 .audio-player {
@@ -309,7 +356,7 @@ button {
 }
 .control-panel,
 .chat-box {
-    height: 60vh;
+    height: 50vh;
     padding: 0.5em;
     background-color: white;
     margin-bottom: 1em;
@@ -318,12 +365,23 @@ button {
     box-shadow: var(--box-shadow);
 }
 
+.now-playing {
+    padding-left: 3rem;
+}
+
 .chat-input {
     display: flex;
     gap: 1em;
     justify-content: space-between;
     align-items: center;
 }
+
+.chat-input input {
+    transform: translateY(-1px);
+    font-size: 1.25rem;
+    width: 100%;
+}
+
 .chat-message {
     padding: 0 0.5em;
 }
@@ -344,13 +402,13 @@ button {
     color: var(--fc-light);
 }
 
+/* .room-info input {
+    margin-right: auto;
+} */
+
 /* Bubbles  */
 
-.room {
-    position: relative;
-}
-
-.bubbles > * {
+.bubble {
     position: absolute;
     background-color: var(--bg-bubble);
     border-radius: 100%;
@@ -392,5 +450,24 @@ button {
     }
     to {
         transform: rotate(360deg) translateX(7vw) rotate(-360deg);
+    }
+}
+
+@media (max-width: 750px) {
+    .room-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .home .container {
+        padding: 6rem 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column-reverse;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: flex-end;
+        align-items: center;
+        grid-template-columns: 1fr 1fr;
     }
 }

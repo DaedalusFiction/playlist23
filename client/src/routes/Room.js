@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { db } from "../firebase";
 import socketIOClient from "socket.io-client";
-import ReactAudioPlayer from "react-audio-player";
 
 import moment from "moment";
 import "moment-timezone";
@@ -10,7 +9,6 @@ import ChatMessage from "../components/ChatMessage";
 import SongBox from "../components/SongBox";
 import SongUploader from "../components/SongUploader";
 import { getDoc, doc } from "firebase/firestore";
-import Bubbles from "../components/Bubbles";
 
 const Room = () => {
     const [username, setusername] = useState("anonymous");
@@ -18,6 +16,7 @@ const Room = () => {
     const ENDPOINT = "http://localhost:4001";
     //socket create as useState element and initialized so that it won't create a new connection every time page rerenders
     const [socket, setSocket] = useState(socketIOClient.connect(ENDPOINT));
+    const player = document.getElementById("reactAudioPlayer");
 
     const [chatMessages, setChatMessages] = useState([
         //welcome message
@@ -64,11 +63,25 @@ const Room = () => {
             player.currentTime = song.time;
             player.play();
         });
+
+        socket.on("pauseSong", () => {
+            player.pause();
+        });
+
         return () => {
             //clean up listeners
             socket.removeAllListeners();
         };
-    }, [chatMessages, socket]);
+    }, [chatMessages, socket, player]);
+
+    useEffect(() => {
+        //sets focus to chat box on page load
+        document.getElementById("chatMessageInput").focus();
+    }, []);
+
+    const changeUsername = (e) => {
+        setusername(e.target.value);
+    };
 
     const sendMessage = () => {
         const msg = document.getElementById("chatMessageInput").value;
@@ -89,17 +102,20 @@ const Room = () => {
 
     const playSong = () => {
         const player = document.getElementById("reactAudioPlayer");
-        const currentTime = player.currentTime;
-
-        socket.emit("playSong", {
-            song: nowPlaying,
-            time: currentTime,
-        });
+        if (nowPlaying) {
+            const currentTime = player.currentTime;
+            socket.emit("playSong", {
+                song: nowPlaying,
+                time: currentTime,
+            });
+        }
     };
 
     const handleKeyPress = (e) => {
-        if (e.code === "Enter") {
+        if (e.code === "Enter" && e.target.id === "chatMessageInput") {
             sendMessage();
+        } else if (e.code === "Enter" && e.target.id === "usernameInput") {
+            document.getElementById("chatMessageInput").focus();
         }
     };
 
@@ -108,82 +124,97 @@ const Room = () => {
         setNowPlaying(songs[e.target.id]);
     };
 
-    const pauseSong = (e) => {
-        var vid = document.getElementById("reactAudioPlayer");
-        vid.currentTime = 5;
-        console.log("Pause");
+    const pauseSong = () => {
+        socket.emit("pauseSong", "pause");
+    };
+
+    const testButton = () => {
+        console.log(player.paused);
     };
 
     return (
         <>
             <div className="room">
                 <div className="container">
-                    <div className="song-panel">
+                    <div className="room-info">
+                        <p>username: </p>
+                        <input
+                            id="usernameInput"
+                            type="text"
+                            placeholder={username}
+                            onChange={changeUsername}
+                            onKeyPress={handleKeyPress}
+                        />
                         <p>room: {params.roomID}</p>
-                        <div className="control-panel" id="control-panel">
-                            {songs.map((song, index) => {
-                                return (
-                                    <SongBox
-                                        key={index}
-                                        index={index}
-                                        song={song}
-                                        onClick={selectSong}
-                                    />
-                                );
-                            })}
-                        </div>
-                        <div className="song-controls">
-                            <SongUploader
-                                username={username}
-                                roomID={params.roomID}
-                                socket={socket}
-                            />
-                            {nowPlaying && (
-                                <div>
-                                    <p>now playing: {nowPlaying.title}</p>
-                                    <div>
-                                        <ReactAudioPlayer
-                                            id="reactAudioPlayer"
-                                            src={nowPlaying.url}
-                                            autoplay
-                                            controls
-                                        />
-                                    </div>
-                                </div>
-                            )}
-                        </div>
                     </div>
-                    <div className="chat-panel">
-                        <p>username: {username}</p>
-                        <div className="chat-box" id="chat-box">
-                            {chatMessages.map((message, index) => {
-                                return (
-                                    <ChatMessage
-                                        key={index}
-                                        message={message}
-                                    />
-                                );
-                            })}
-                        </div>
-                        <div className="chat-input">
-                            <input
-                                id="chatMessageInput"
-                                type="text"
-                                placeholder="enter message..."
-                                onKeyPress={handleKeyPress}
+
+                    <div className="room-content">
+                        <div className="song-panel">
+                            <div className="control-panel" id="control-panel">
+                                {songs.map((song, index) => {
+                                    return (
+                                        <SongBox
+                                            key={index}
+                                            index={index}
+                                            song={song}
+                                            onClick={selectSong}
+                                        />
+                                    );
+                                })}
+                            </div>
+                            {nowPlaying && (
+                                <p className="now-playing">
+                                    now playing: {nowPlaying.title}
+                                </p>
+                            )}
+                            <audio
+                                id="reactAudioPlayer"
+                                src={nowPlaying && nowPlaying.url}
+                                controls
                             />
-                            <label className="btn">
-                                <button id="sendButton" onClick={sendMessage} />
-                                send
-                            </label>
-                            <label className="btn">
-                                <button id="pause" onClick={pauseSong} />
-                                pause
-                            </label>
-                            <label className="btn">
-                                <button id="play" onClick={playSong} />
-                                play
-                            </label>
+                            <div className="song-controls">
+                                <p>group controls: </p>
+                                <SongUploader
+                                    username={username}
+                                    roomID={params.roomID}
+                                    socket={socket}
+                                />
+                                <label className="btn">
+                                    <button id="play" onClick={playSong} />
+                                    play
+                                </label>
+                                <label className="btn">
+                                    <button id="pause" onClick={pauseSong} />
+                                    pause
+                                </label>
+                            </div>
+                        </div>
+                        <div className="chat-panel">
+                            <div className="chat-box" id="chat-box">
+                                {chatMessages.map((message, index) => {
+                                    return (
+                                        <ChatMessage
+                                            key={index}
+                                            message={message}
+                                        />
+                                    );
+                                })}
+                            </div>
+                            <div className="chat-input">
+                                <input
+                                    id="chatMessageInput"
+                                    type="text"
+                                    placeholder="enter message..."
+                                    onKeyPress={handleKeyPress}
+                                />
+                                <label className="btn">
+                                    <button
+                                        id="sendButton"
+                                        onClick={sendMessage}
+                                    />
+                                    send
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>

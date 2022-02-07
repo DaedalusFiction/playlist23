@@ -12,7 +12,6 @@ import Bubbles from "./components/Bubbles";
 function App() {
     return (
         <>
-            <Bubbles />
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />

@@ -44,12 +44,10 @@ const SongUploader = ({ username, roomID, socket }) => {
         }
     };
     return (
-        <div className="song-uploader">
-            <label className="btn">
-                <input type="file" onChange={uploadFile} accept="audio/*" />
-                add song
-            </label>
-        </div>
+        <label className="btn">
+            <input type="file" onChange={uploadFile} accept="audio/*" />
+            add song
+        </label>
     );
 };
 

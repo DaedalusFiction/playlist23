@@ -5,7 +5,7 @@ import JoinRoomButton from "../components/JoinRoomButton";
 const Home = () => {
     return (
         <>
-            <main className="home">
+            <div className="home">
                 <div className="container">
                     <div className="home-left flex">
                         <div className="home-buttons">
@@ -22,7 +22,7 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-            </main>
+            </div>
         </>
     );
 };
