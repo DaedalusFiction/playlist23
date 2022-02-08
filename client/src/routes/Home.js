@@ -1,4 +1,3 @@
-import Bubbles from "../components/Bubbles";
 import CreateRoomButton from "../components/CreateRoomButton";
 import JoinRoomButton from "../components/JoinRoomButton";
 

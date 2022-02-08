@@ -13,7 +13,8 @@ import { getDoc, doc } from "firebase/firestore";
 const Room = () => {
     const [username, setusername] = useState("anonymous");
     const params = useParams();
-    const ENDPOINT = "playlist23.herokuapp.com";
+    // const ENDPOINT = "playlist23.herokuapp.com";
+    const ENDPOINT = "http://localhost:4001";
     //socket create as useState element and initialized so that it won't create a new connection every time page rerenders
     const [socket, setSocket] = useState(socketIOClient.connect(ENDPOINT));
     const player = document.getElementById("reactAudioPlayer");
@@ -24,7 +25,7 @@ const Room = () => {
             time: moment().format("h:mm a"),
             key: Date.now(),
             room: params.roomID,
-            user: username,
+            user: "playlist: 23",
             message: `Welcome to room: ${params.roomID}`,
         },
     ]);
