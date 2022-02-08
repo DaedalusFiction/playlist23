@@ -11,7 +11,9 @@ import SongUploader from "../components/SongUploader";
 import { getDoc, doc } from "firebase/firestore";
 
 const Room = () => {
-    const [username, setusername] = useState("anonymous");
+    const [username, setusername] = useState(
+        "anonymous" + Math.floor(1000 + Math.random() * 9000)
+    );
     const params = useParams();
     // const ENDPOINT = "playlist23.herokuapp.com";
     const ENDPOINT = "http://localhost:4001";
@@ -19,19 +21,11 @@ const Room = () => {
     const [socket, setSocket] = useState(socketIOClient.connect(ENDPOINT));
     const player = document.getElementById("reactAudioPlayer");
 
-    const [chatMessages, setChatMessages] = useState([
-        //welcome message
-        {
-            time: moment().format("h:mm a"),
-            key: Date.now(),
-            room: params.roomID,
-            user: "playlist: 23",
-            message: `Welcome to room: ${params.roomID}`,
-        },
-    ]);
+    const [chatMessages, setChatMessages] = useState([]);
 
     const [songs, setSongs] = useState([]);
     const [nowPlaying, setNowPlaying] = useState(null);
+    const [playingMusic, setPlayingMusic] = useState(false);
 
     useEffect(() => {
         socket.emit("joinRoom", params.roomID);
@@ -100,19 +94,8 @@ const Room = () => {
             };
 
             socket.emit("sendMessage", newMessage);
-
+            console.log("sent");
             document.getElementById("chatMessageInput").value = "";
-        }
-    };
-
-    const playSong = () => {
-        const player = document.getElementById("reactAudioPlayer");
-        if (nowPlaying) {
-            const currentTime = player.currentTime;
-            socket.emit("playSong", {
-                song: nowPlaying,
-                time: currentTime,
-            });
         }
     };
 
@@ -127,14 +110,24 @@ const Room = () => {
     const selectSong = (e) => {
         console.log(songs[e.target.id].url);
         setNowPlaying(songs[e.target.id]);
+        setPlayingMusic(false);
     };
 
-    const pauseSong = () => {
-        socket.emit("pauseSong", "pause");
-    };
-
-    const testButton = () => {
-        console.log(player.paused);
+    const playPause = () => {
+        const player = document.getElementById("reactAudioPlayer");
+        if (nowPlaying) {
+            const currentTime = player.currentTime;
+            if (player.paused) {
+                setPlayingMusic(true);
+                socket.emit("playSong", {
+                    song: nowPlaying,
+                    time: currentTime,
+                });
+            } else {
+                setPlayingMusic(false);
+                socket.emit("pauseSong", "pause");
+            }
+        }
     };
 
     return (
@@ -156,16 +149,22 @@ const Room = () => {
                     <div className="room-content">
                         <div className="song-panel">
                             <div className="control-panel" id="control-panel">
-                                {songs.map((song, index) => {
-                                    return (
-                                        <SongBox
-                                            key={index}
-                                            index={index}
-                                            song={song}
-                                            onClick={selectSong}
-                                        />
-                                    );
-                                })}
+                                {songs.length > 0 ? (
+                                    songs.map((song, index) => {
+                                        return (
+                                            <SongBox
+                                                key={index}
+                                                index={index}
+                                                song={song}
+                                                onClick={selectSong}
+                                            />
+                                        );
+                                    })
+                                ) : (
+                                    <p className="add-song-prompt">
+                                        add a song to get started
+                                    </p>
+                                )}
                             </div>
                             {nowPlaying && (
                                 <p className="now-playing">
@@ -185,12 +184,14 @@ const Room = () => {
                                     socket={socket}
                                 />
                                 <label className="btn">
-                                    <button id="play" onClick={playSong} />
-                                    play
-                                </label>
-                                <label className="btn">
-                                    <button id="pause" onClick={pauseSong} />
-                                    pause
+                                    <button id="play" onClick={playPause} />
+                                    <i
+                                        className={
+                                            playingMusic
+                                                ? "fas fa-pause"
+                                                : "fas fa-play"
+                                        }
+                                    ></i>
                                 </label>
                             </div>
                         </div>

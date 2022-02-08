@@ -3,8 +3,11 @@ import { db, storage } from "../firebase";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
 import moment from "moment";
+import { useState } from "react";
 
 const SongUploader = ({ username, roomID, socket }) => {
+    const [isUploading, setIsUploading] = useState(false);
+
     const uploadFile = async (e) => {
         console.log(e.target.files[0].name);
         if (e.target.value !== null) {
@@ -12,6 +15,7 @@ const SongUploader = ({ username, roomID, socket }) => {
             const roomRef = doc(db, "rooms", roomID);
             const storageRef = ref(storage, selected.name);
             const uploadTask = uploadBytesResumable(storageRef, selected);
+            setIsUploading(true);
             uploadTask.on(
                 "state_changed",
                 (snapshot) => {},
@@ -38,6 +42,7 @@ const SongUploader = ({ username, roomID, socket }) => {
                             };
                             socket.emit("sendMessage", newMessage);
                             socket.emit("addSong", newSong);
+                            setIsUploading(false);
                         }
                     );
                 }
@@ -46,8 +51,15 @@ const SongUploader = ({ username, roomID, socket }) => {
     };
     return (
         <label className="btn">
-            <input type="file" onChange={uploadFile} accept="audio/*" />
-            add song
+            <input
+                type="file"
+                onChange={uploadFile}
+                accept=".mp3, .ogg, .FLAC"
+            />
+            <i
+                className={isUploading ? "fas fa-spinner spin" : "fas fa-plus"}
+            ></i>
+            {/* <i className="fas fa-spinner"></i> */}
         </label>
     );
 };

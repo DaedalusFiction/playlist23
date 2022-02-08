@@ -16,6 +16,10 @@ const CreateRoomButton = () => {
                 console.log("room still exists");
             }, 1000);
         } else {
+            const setTask = await setDoc(roomRef, {
+                owner: "anonymous",
+                songlist: [],
+            });
             navigate(`/rooms/${newRoom}`);
         }
     };
