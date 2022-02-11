@@ -3,16 +3,19 @@ import { db, storage } from "../firebase";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
 import moment from "moment";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
+import { socket } from "../socket/socket";
 
-const SongUploader = ({ username, roomID, socket }) => {
+const SongUploader = ({ username }) => {
+    const params = useParams();
     const [isUploading, setIsUploading] = useState(false);
 
     const uploadFile = async (e) => {
         console.log(e.target.files[0].name);
         if (e.target.value !== null) {
             const selected = e.target.files[0];
-            const roomRef = doc(db, "rooms", roomID);
+            const roomRef = doc(db, "rooms", params.roomID);
             const storageRef = ref(storage, selected.name);
             const uploadTask = uploadBytesResumable(storageRef, selected);
             setIsUploading(true);
@@ -33,15 +36,8 @@ const SongUploader = ({ username, roomID, socket }) => {
                                 owner: username,
                                 songlist: arrayUnion(newSong),
                             });
-                            const newMessage = {
-                                time: moment().format("h:mm a"),
-                                key: Date.now(),
-                                room: roomID,
-                                user: "playlist: 23",
-                                message: "new song uploaded",
-                            };
-                            socket.emit("sendMessage", newMessage);
-                            socket.emit("addSong", newSong);
+
+                            socket.emit("updateSonglist", "song");
                             setIsUploading(false);
                         }
                     );

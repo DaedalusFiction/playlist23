@@ -88,6 +88,12 @@ input[type="file"] {
     display: none;
 }
 
+input[type="range"] {
+    width: 100%;
+    background-color: black;
+    color: black;
+}
+
 button {
     display: none;
 }
@@ -365,6 +371,17 @@ audio:focus {
     flex-wrap: wrap;
     gap: 1em;
     margin: 0.5em 0;
+}
+
+.song-timer {
+    display: flex;
+    justify-content: end;
+    font-size: 1rem;
+}
+
+.song-timer p {
+    font-size: 1rem;
+    margin: 0 0.5em;
 }
 
 .addsong {

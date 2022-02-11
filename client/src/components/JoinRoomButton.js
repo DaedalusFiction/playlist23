@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -11,6 +11,10 @@ const JoinRoomButton = () => {
         setRoomNumber(e.target.value);
     };
 
+    useEffect(() => {
+        document.getElementById("joinInput").focus();
+    }, []);
+
     const joinRoom = async () => {
         const newRoom = roomNumber;
         const roomRef = doc(db, "rooms", newRoom.toString());
@@ -21,14 +25,6 @@ const JoinRoomButton = () => {
             setJoinError(true);
         }
     };
-    // const joinRoom = () => {
-    //     if (roomNumber > 1000 && roomNumber < 9999) {
-    //         setJoinError(false);
-    //         navigate(`/rooms/${roomNumber}`);
-    //     } else {
-    //         setJoinError(true);
-    //     }
-    // };
 
     const handleKeyPress = (e) => {
         if (e.code === "Enter") {
@@ -40,6 +36,7 @@ const JoinRoomButton = () => {
             <div className="join-room-button">
                 <input
                     type="text"
+                    id="joinInput"
                     onChange={enterRoomNumber}
                     placeholder="Enter room number"
                     onKeyPress={handleKeyPress}
