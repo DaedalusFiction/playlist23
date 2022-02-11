@@ -12,7 +12,8 @@ const MusicPlayer = ({
     const player = useRef();
 
     useEffect(() => {
-        socket.on("playSong", (info) => {
+        socket.on("playSong", (song) => {
+            setNowPlaying(song.song);
             player.current.play();
             setPlayingMusic(true);
         });
@@ -34,12 +35,16 @@ const MusicPlayer = ({
                 setPlayingMusic(false);
             };
             const currentTime = player.current.currentTime;
+            // console.log("now playing: ");
+            // console.log(nowPlaying);
             if (!playingMusic) {
+                // console.log("Emitting play event");
                 socket.emit("playSong", {
                     song: nowPlaying,
                     time: currentTime,
                 });
             } else {
+                // console.log("emitting pause event");
                 socket.emit("pauseSong", "pause");
             }
         }

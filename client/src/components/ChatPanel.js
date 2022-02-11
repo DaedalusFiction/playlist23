@@ -10,18 +10,15 @@ const ChatPanel = ({ username }) => {
     const params = useParams();
 
     useEffect(() => {
-        console.log("adding chat listener");
         socket.on("chatMessage", (message) => {
             setChatMessages([...chatMessages, message]);
             let chatbox = document.getElementById("chat-box");
             chatbox.scrollTop = chatbox.scrollHeight;
-            console.log("adding message");
         });
 
         return () => {
             // //clean up listeners
             socket.off("chatMessage");
-            console.log("removing chat listener");
         };
     }, [chatMessages, params.roomID]);
 
@@ -35,7 +32,6 @@ const ChatPanel = ({ username }) => {
                 user: username,
                 message: msg,
             };
-            console.log("sending message");
             socket.emit("sendMessage", newMessage);
             document.getElementById("chatMessageInput").value = "";
         }

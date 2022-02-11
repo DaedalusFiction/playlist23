@@ -53,23 +53,27 @@ io.on("connection", (socket) => {
         //send message to everyone in joined room
         socket.on("sendMessage", msgListener);
 
-        socket.on("updateSonglist", (song) => {
+        const updateSonglistListener = (song) => {
             io.in(room).emit("updateSonglist", "song");
-            console.log("updating songlist");
-        });
+        };
+        socket.on("updateSonglist", updateSonglistListener);
 
-        socket.on("playSong", (song) => {
-            io.in(room).emit("playSong", "song");
+        const playSongListener = (song) => {
+            io.in(room).emit("playSong", song);
             console.log("playing the songggg");
-        });
+        };
+        socket.on("playSong", playSongListener);
 
-        socket.on("pauseSong", (pause) => {
+        const pauseSongListener = (pause) => {
             io.in(room).emit("pauseSong", pause);
-        });
+        };
+        socket.on("pauseSong", pauseSongListener);
 
         socket.on("leavingRoom", (roomNumber) => {
-            console.log("turning off listnerer");
             socket.off("sendMessage", msgListener);
+            socket.off("updateSongList", updateSonglistListener);
+            socket.off("playSong", playSongListener);
+            socket.off("pauseSong", pauseSongListener);
         });
         // socket.on("disconnect", () => {
         //     socket.broadcast.emit("chatMessage", {
@@ -81,14 +85,6 @@ io.on("connection", (socket) => {
         //     });
         //     console.log("client diesconnecting");
         // });
-    });
-
-    socket.on("leaveRoom", (room) => {
-        socket.leave(room);
-        // socket.off("sendMessage");
-        // socket.off("playSong");
-        // socket.off("pauseSong");
-        console.log("leaving room");
     });
 });
 
