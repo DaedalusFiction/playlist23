@@ -10,7 +10,11 @@ import About from "./routes/About";
 import NoPage from "./routes/NoPage";
 
 function App() {
-    const [joinedRooms, setJoinedRooms] = useState(["charles"]);
+    //holds list of joined rooms. Doesn't work if added to Rooms route and passed through Outlet, so stored here instead
+    const [joinedRooms, setJoinedRooms] = useState([]);
+
+    //TODO: make username state here
+
     return (
         <>
             <Routes>

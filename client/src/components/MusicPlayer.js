@@ -12,6 +12,7 @@ const MusicPlayer = ({
     const player = useRef();
 
     useEffect(() => {
+        //set up listeners
         socket.on("playSong", (song) => {
             setNowPlaying(song.song);
             player.current.play();
@@ -35,22 +36,16 @@ const MusicPlayer = ({
                 setPlayingMusic(false);
             };
             const currentTime = player.current.currentTime;
-            // console.log("now playing: ");
-            // console.log(nowPlaying);
             if (!playingMusic) {
-                // console.log("Emitting play event");
                 socket.emit("playSong", {
                     song: nowPlaying,
                     time: currentTime,
                 });
             } else {
-                // console.log("emitting pause event");
                 socket.emit("pauseSong", "pause");
             }
         }
     };
-
-    const testBtn = () => {};
 
     return (
         <div>
@@ -81,10 +76,7 @@ const MusicPlayer = ({
                         }
                     ></i>
                 </label>
-                <label className="btn">
-                    <button id="testbtn" onClick={testBtn} />
-                    Test
-                </label>
+
                 <audio
                     id="reactAudioPlayer"
                     ref={player}

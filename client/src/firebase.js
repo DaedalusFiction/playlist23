@@ -9,9 +9,11 @@ const firebaseConfig = {};
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+//initialize database and storage
 const db = getFirestore(app);
 const storage = getStorage(app);
 
+//initialize OAuth authentication
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
 

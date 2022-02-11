@@ -1,4 +1,5 @@
 const Bubbles = () => {
+    // floating bubble graphics behind pages
     return (
         <>
             <div className="bubble bubble-1"></div>

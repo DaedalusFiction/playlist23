@@ -2,29 +2,31 @@ import React from "react";
 import { db, storage } from "../firebase";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
-import moment from "moment";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { socket } from "../socket/socket";
 
 const SongUploader = ({ username }) => {
     const params = useParams();
+    //to change display of upload button
     const [isUploading, setIsUploading] = useState(false);
 
     const uploadFile = async (e) => {
-        console.log(e.target.files[0].name);
         if (e.target.value !== null) {
             const selected = e.target.files[0];
             const roomRef = doc(db, "rooms", params.roomID);
             const storageRef = ref(storage, selected.name);
+
+            //upload to firebase storage
             const uploadTask = uploadBytesResumable(storageRef, selected);
             setIsUploading(true);
+
             uploadTask.on(
                 "state_changed",
                 (snapshot) => {},
                 (error) => {},
                 () => {
-                    // creates firestore database entry
+                    // uses returned URL to create firestore database entry
                     getDownloadURL(uploadTask.snapshot.ref).then(
                         async (downloadURL) => {
                             const newSong = {
@@ -37,6 +39,7 @@ const SongUploader = ({ username }) => {
                                 songlist: arrayUnion(newSong),
                             });
 
+                            //emit event to server index socket to refresh all users' song panel to show newly added songbox
                             socket.emit("updateSonglist", "song");
                             setIsUploading(false);
                         }
@@ -45,6 +48,7 @@ const SongUploader = ({ username }) => {
             );
         }
     };
+
     return (
         <label className="btn">
             <input
@@ -55,7 +59,6 @@ const SongUploader = ({ username }) => {
             <i
                 className={isUploading ? "fas fa-spinner spin" : "fas fa-plus"}
             ></i>
-            {/* <i className="fas fa-spinner"></i> */}
         </label>
     );
 };

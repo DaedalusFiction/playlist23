@@ -31,6 +31,7 @@ io.on("connection", (socket) => {
     socket.on("joinRoom", (room) => {
         socket.join(room);
 
+        //notify all other users in room that user has joined
         socket.broadcast.emit("chatMessage", {
             time: moment().format("h:mm a"),
             key: Date.now(),
@@ -38,6 +39,8 @@ io.on("connection", (socket) => {
             user: "playlist: 23",
             message: `a user has joined the chat`,
         });
+
+        //welcome connected user
         socket.emit("chatMessage", {
             time: moment().format("h:mm a"),
             key: Date.now(),
@@ -46,45 +49,58 @@ io.on("connection", (socket) => {
             message: `welcome to room: ${room}`,
         });
 
+        //chatbox event listener
         const msgListener = (message) => {
             io.in(room).emit("chatMessage", message);
-            console.log("sending message");
         };
-        //send message to everyone in joined room
         socket.on("sendMessage", msgListener);
 
+        //update song panel list listener
         const updateSonglistListener = (song) => {
             io.in(room).emit("updateSonglist", "song");
         };
         socket.on("updateSonglist", updateSonglistListener);
 
+        //play song listener
         const playSongListener = (song) => {
             io.in(room).emit("playSong", song);
-            console.log("playing the songggg");
         };
         socket.on("playSong", playSongListener);
 
+        //pause song listener
         const pauseSongListener = (pause) => {
             io.in(room).emit("pauseSong", pause);
         };
         socket.on("pauseSong", pauseSongListener);
 
+        //leaves room and turns off listeners so that multiple listeners are not created
+        //problem was that every time "joinRoom" was called it would add redundant listeners and emit duplicate messages
         socket.on("leavingRoom", (roomNumber) => {
             socket.off("sendMessage", msgListener);
             socket.off("updateSongList", updateSonglistListener);
             socket.off("playSong", playSongListener);
             socket.off("pauseSong", pauseSongListener);
+
+            //notifies all other users when user navigates away from Room
+            socket.broadcast.emit("chatMessage", {
+                time: moment().format("h:mm a"),
+                key: Date.now(),
+                room: room,
+                user: "playlist: 23",
+                message: `a user has left the chat`,
+            });
         });
-        // socket.on("disconnect", () => {
-        //     socket.broadcast.emit("chatMessage", {
-        //         time: moment().format("h:mm a"),
-        //         key: Date.now(),
-        //         room: room,
-        //         user: "playlist: 23",
-        //         message: `a user has left the chat`,
-        //     });
-        //     console.log("client diesconnecting");
-        // });
+
+        //dupicated so that will also notify other users when user closes tab
+        socket.on("disconnect", () => {
+            socket.broadcast.emit("chatMessage", {
+                time: moment().format("h:mm a"),
+                key: Date.now(),
+                room: room,
+                user: "playlist: 23",
+                message: `a user has left the chat`,
+            });
+        });
     });
 });
 

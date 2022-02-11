@@ -234,7 +234,8 @@ audio:focus {
 
 .join-room,
 .create-room,
-.about-room {
+.about-room,
+.no-page-room {
     display: flex;
     height: calc(100vh - 69.15px);
     justify-content: center;
@@ -243,7 +244,8 @@ audio:focus {
 }
 
 .create-room .container,
-.about-room .container {
+.about-room .container,
+.no-page-room .container {
     display: flex;
     justify-content: center;
     gap: 1em;
