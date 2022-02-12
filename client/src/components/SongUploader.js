@@ -30,6 +30,7 @@ const SongUploader = ({ username }) => {
                     getDownloadURL(uploadTask.snapshot.ref).then(
                         async (downloadURL) => {
                             const newSong = {
+                                room: params.roomID,
                                 artist: username,
                                 title: e.target.files[0].name,
                                 url: downloadURL,
@@ -40,7 +41,7 @@ const SongUploader = ({ username }) => {
                             });
 
                             //emit event to server index socket to refresh all users' song panel to show newly added songbox
-                            socket.emit("updateSonglist", "song");
+                            socket.emit("updateSonglist", params.roomID);
                             setIsUploading(false);
                         }
                     );

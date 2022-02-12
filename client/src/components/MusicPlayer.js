@@ -1,6 +1,8 @@
 import SongUploader from "./SongUploader";
 import { useEffect, useRef } from "react";
 import { socket } from "../socket/socket";
+import styles from "../styles/rangeInput.css";
+import { useParams } from "react-router-dom";
 
 const MusicPlayer = ({
     username,
@@ -10,7 +12,7 @@ const MusicPlayer = ({
     setPlayingMusic,
 }) => {
     const player = useRef();
-
+    const params = useParams();
     useEffect(() => {
         //set up listeners
         socket.on("playSong", (song) => {
@@ -38,11 +40,12 @@ const MusicPlayer = ({
             const currentTime = player.current.currentTime;
             if (!playingMusic) {
                 socket.emit("playSong", {
+                    room: params.roomID,
                     song: nowPlaying,
                     time: currentTime,
                 });
             } else {
-                socket.emit("pauseSong", "pause");
+                socket.emit("pauseSong", params.roomID);
             }
         }
     };
@@ -59,11 +62,15 @@ const MusicPlayer = ({
                 min="0"
                 max="100"
             />
-            <div className="song-timer">
-                <div className="song-time-current">0</div>
-                <p>/</p>
-                <div className="song-time-duration">4:33</div>
-            </div>
+            {nowPlaying && (
+                <div className="song-timer">
+                    <div className="song-time-current">0</div>
+                    <p>/</p>
+                    <div className="song-time-duration">
+                        {player.current.duration}
+                    </div>
+                </div>
+            )}
             <div className="song-controls">
                 <p>group controls: </p>
                 <SongUploader username={username} />
