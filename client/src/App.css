@@ -94,6 +94,10 @@ input[type="range"] {
     color: black;
 }
 
+audio {
+    display: none;
+}
+
 button {
     display: none;
 }
@@ -375,6 +379,12 @@ audio:focus {
     margin: 0.5em 0;
 }
 
+.music-controls {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+}
+
 .song-timer {
     display: flex;
     justify-content: end;
@@ -415,10 +425,11 @@ audio:focus {
 
 .now-playing {
     font-size: 0.85rem;
-    padding-left: 3em;
+    text-align: end;
 }
 
 .chat-input {
+    padding: 0.85rem 0;
     display: flex;
     gap: 1em;
     justify-content: space-between;
