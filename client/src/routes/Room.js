@@ -7,8 +7,6 @@ import ChatPanel from "../components/ChatPanel";
 import { socket } from "../socket/socket";
 
 const Room = ({ joinedRooms, setJoinedRooms, username, setUsername }) => {
-    //initialize username state and generate default username
-
     const params = useParams();
 
     useEffect(() => {

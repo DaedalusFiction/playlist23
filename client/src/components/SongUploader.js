@@ -60,16 +60,25 @@ const SongUploader = ({ username }) => {
     };
 
     return (
-        <label className="btn">
-            <input
-                type="file"
-                onChange={uploadFile}
-                accept=".mp3, .ogg, .FLAC"
-            />
-            <i
-                className={isUploading ? "fas fa-spinner spin" : "fas fa-plus"}
-            ></i>
-        </label>
+        <div>
+            <label className="btn">
+                <input
+                    type="file"
+                    onChange={uploadFile}
+                    accept=".mp3, .ogg, .FLAC"
+                />
+                <i
+                    className={
+                        isUploading ? "fas fa-spinner spin" : "fas fa-plus"
+                    }
+                ></i>
+            </label>
+            {uploadError === "size" && (
+                <p className="upload-error">
+                    error: file must be less than 10 MB
+                </p>
+            )}
+        </div>
     );
 };
 

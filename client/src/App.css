@@ -139,6 +139,10 @@ audio:focus {
     margin: 0 auto;
 }
 
+.ta-end {
+    text-align: end;
+}
+
 /* Components  */
 
 /* Header  */
@@ -275,22 +279,25 @@ audio:focus {
 .about-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 3rem;
 }
 
-.about-grid > * + * {
+.about-grid > * {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about-room ol {
+    list-style-position: inside;
 }
 
 .about-room p {
-    max-width: 25em;
+    max-width: 20em;
 }
 
-.flavor-text p {
-    font-size: 4rem;
-    width: 100%;
-    text-align: end;
+.about-room .large-text {
+    font-size: 5rem;
 }
 
 /* Room  */
@@ -407,10 +414,17 @@ audio:focus {
     align-items: center;
 }
 
+.now-playing {
+    font-size: 0.85rem;
+    text-align: end;
+    margin-right: 3rem;
+}
+
 .song-timer {
     display: flex;
     justify-content: end;
     font-size: 1rem;
+    margin-right: 3rem;
 }
 
 .song-timer p {
@@ -420,7 +434,7 @@ audio:focus {
 
 .addsong {
     color: var(--bg-btn);
-
+    position: relative;
     cursor: pointer;
     transition: 0.2s;
 }
@@ -429,6 +443,12 @@ audio:focus {
     color: var(--bg-btn-hover);
     cursor: pointer;
     transition: 0.2s;
+}
+
+.upload-error {
+    position: fixed;
+    font-size: 0.85rem;
+    margin: 1em 0 0 1em;
 }
 
 .btn-mute {
@@ -453,11 +473,6 @@ audio:focus {
     overflow-y: auto;
     border-radius: 5px;
     box-shadow: var(--box-shadow);
-}
-
-.now-playing {
-    font-size: 0.85rem;
-    text-align: end;
 }
 
 .chat-input {
@@ -574,5 +589,19 @@ audio:focus {
         justify-content: flex-end;
         align-items: center;
         grid-template-columns: 1fr 1fr;
+    }
+
+    .about-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .about-room .large-text {
+        display: none;
+    }
+
+    .about-room .ta-end {
+        text-align: left;
     }
 }

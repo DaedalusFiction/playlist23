@@ -3,20 +3,14 @@ const About = () => {
         <div className="about-room">
             <div className="container">
                 <div className="about-grid">
-                    <div className="flavor-text">
-                        <p>share,</p>
-                        <p>listen,</p>
-                        <p>collaborate</p>
-                    </div>
-
+                    <p className="large-text ta-end">share</p>
                     <p>
                         playlist: 23 offers musicians a simple way to share what
                         they've been working on. it's fast, free, and engineered
                         to help you get the constructive feedback you need and
                         make your music as bitchin' as it can be
                     </p>
-
-                    <div>
+                    <div className="ta-end">
                         <h2>how it works:</h2>
                         <ol>
                             <li>create a room</li>
@@ -25,6 +19,8 @@ const About = () => {
                             <li>hit play</li>
                         </ol>
                     </div>
+                    <p className="large-text ">listen</p>
+                    <p className="large-text ta-end">collaborate</p>
 
                     <p>
                         wherever you are in the song, everyone else is there
@@ -32,7 +28,7 @@ const About = () => {
                         play, and it plays for everyone. (mute, on the other
                         hand, is all yours)
                     </p>
-                    <p>
+                    <p className="ta-end">
                         there's no limit to the number of songs you can upload,
                         but each song is limited to 10 MB, and song and room
                         data will be automatically deleted after 24 hours
