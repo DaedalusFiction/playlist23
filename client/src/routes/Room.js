@@ -1,16 +1,14 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import "moment-timezone";
 import SongPanel from "../components/SongPanel";
 import ChatPanel from "../components/ChatPanel";
 import { socket } from "../socket/socket";
 
-const Room = ({ joinedRooms, setJoinedRooms }) => {
+const Room = ({ joinedRooms, setJoinedRooms, username, setUsername }) => {
     //initialize username state and generate default username
-    const [username, setusername] = useState(
-        "anonymous" + Math.floor(1000 + Math.random() * 9000)
-    );
+
     const params = useParams();
 
     useEffect(() => {
@@ -27,7 +25,7 @@ const Room = ({ joinedRooms, setJoinedRooms }) => {
     }, [params.roomID]);
 
     const changeUsername = (e) => {
-        setusername(e.target.value);
+        setUsername(e.target.value);
     };
 
     const handleKeyPress = (e) => {

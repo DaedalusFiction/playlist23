@@ -4,14 +4,7 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyBvVQIg-TzSo3hdxaxgozf2t070xB_TXhE",
-    authDomain: "playlist23-ba075.firebaseapp.com",
-    projectId: "playlist23-ba075",
-    storageBucket: "playlist23-ba075.appspot.com",
-    messagingSenderId: "44992394161",
-    appId: "1:44992394161:web:77cf34fc5df9cd1e9f0390",
-};
+const firebaseConfig = {};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

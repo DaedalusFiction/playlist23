@@ -55,7 +55,6 @@ label {
     color: var(--fc-primary);
 }
 
-ol,
 ul {
     list-style: none;
 }
@@ -271,6 +270,29 @@ audio:focus {
     transform: translateY(-2px);
 }
 
+/* About */
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.about-grid > * + * {
+    display: flex;
+    align-items: center;
+}
+
+.about-room p {
+    max-width: 25em;
+}
+
+.flavor-text p {
+    font-size: 4rem;
+    width: 100%;
+    text-align: end;
+}
+
 /* Room  */
 
 .room {
@@ -409,9 +431,19 @@ audio:focus {
     transition: 0.2s;
 }
 
-.audio-player {
-    width: 100%;
+.btn-mute {
+    height: 35px;
+    width: 35px;
+    border-radius: 100%;
 }
+
+.btn-mute svg {
+    transform: translate(-8px, 2px);
+}
+
+/* .audio-player {
+    width: 100%;
+} */
 .control-panel,
 .chat-box {
     height: 50vh;
@@ -429,7 +461,7 @@ audio:focus {
 }
 
 .chat-input {
-    padding: 0.85rem 0;
+    padding: 0.88rem 0;
     display: flex;
     gap: 1em;
     justify-content: space-between;

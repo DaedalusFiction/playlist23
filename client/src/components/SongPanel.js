@@ -26,6 +26,7 @@ const SongPanel = ({ username }) => {
     }, [params.roomID]);
 
     useEffect(() => {
+        //get song list on page load
         getsonglist();
     }, [getsonglist]);
 
@@ -40,8 +41,12 @@ const SongPanel = ({ username }) => {
     }, [getsonglist]);
 
     const selectSong = (e) => {
-        setNowPlaying(songs[e.target.id]);
-        setPlayingMusic(false);
+        const previousID = nowPlaying;
+        // checks to see if clicked song is not also the currently selected song
+        if (previousID === null || previousID.url !== songs[e.target.id].url) {
+            setNowPlaying(songs[e.target.id]);
+            setPlayingMusic(false);
+        }
     };
     return (
         <div>

@@ -12,6 +12,9 @@ import NoPage from "./routes/NoPage";
 function App() {
     //holds list of joined rooms. Doesn't work if added to Rooms route and passed through Outlet, so stored here instead
     const [joinedRooms, setJoinedRooms] = useState([]);
+    const [username, setUsername] = useState(
+        "anonymous" + Math.floor(1000 + Math.random() * 9000)
+    );
 
     //TODO: make username state here
 
@@ -38,6 +41,8 @@ function App() {
                                 <Room
                                     joinedRooms={joinedRooms}
                                     setJoinedRooms={setJoinedRooms}
+                                    username={username}
+                                    setUsername={setUsername}
                                 />
                             }
                         />

@@ -9,11 +9,9 @@ const CreateRoomButton = () => {
         const roomRef = doc(db, "rooms", newRoom.toString());
         const room = await getDoc(roomRef);
         if (room.exists()) {
-            console.log("room exists");
             setTimeout(() => {
                 //if room already exists, recursively attempts to get a new one
                 // createRoom();
-                console.log("room still exists");
             }, 1000);
         } else {
             const setTask = await setDoc(roomRef, {

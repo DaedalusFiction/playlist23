@@ -10,6 +10,7 @@ const SongUploader = ({ username }) => {
     const params = useParams();
     //to change display of upload button
     const [isUploading, setIsUploading] = useState(false);
+    const [uploadError, setUploadError] = useState(null);
 
     const uploadFile = async (e) => {
         if (e.target.value !== null) {
@@ -24,7 +25,14 @@ const SongUploader = ({ username }) => {
             uploadTask.on(
                 "state_changed",
                 (snapshot) => {},
-                (error) => {},
+                (error) => {
+                    if (error.code === "storage/unauthorized") {
+                        console.log("storage: unauthorized");
+                        setUploadError("size");
+                    }
+
+                    setIsUploading(false);
+                },
                 () => {
                     // uses returned URL to create firestore database entry
                     getDownloadURL(uploadTask.snapshot.ref).then(
@@ -43,6 +51,7 @@ const SongUploader = ({ username }) => {
                             //emit event to server index socket to refresh all users' song panel to show newly added songbox
                             socket.emit("updateSonglist", params.roomID);
                             setIsUploading(false);
+                            setUploadError(null);
                         }
                     );
                 }
