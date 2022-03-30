@@ -15,8 +15,8 @@ const socketio = require("socket.io");
 
 const io = socketio(server, {
     cors: {
-        // origin: "http://localhost:3000",
-        origin: "playlist23.herokuapp.com/",
+        origin: "http://localhost:3000",
+        // origin: "playlist23.herokuapp.com/",
         methods: ["GET", "POST"],
     },
 });

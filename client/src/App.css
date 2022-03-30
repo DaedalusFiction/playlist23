@@ -8,7 +8,7 @@
     --fc-light: rgb(117, 117, 117);
 
     --bg-bubble: rgb(255, 82, 82);
-
+    --white: #eee;
     --bg-primary: #ccff33;
     --bg-btn: #008000;
     --bg-btn-hover: #007200;
@@ -29,6 +29,8 @@ html {
     box-sizing: border-box;
     font-size: 16px;
     position: relative;
+
+    /* background: rgb(58, 58, 58); */
 }
 
 * {
@@ -53,6 +55,7 @@ label {
     font-size: 1.15rem;
     font-weight: normal;
     color: var(--fc-primary);
+    /* color: white; */
 }
 
 ul {
@@ -87,11 +90,11 @@ input[type="file"] {
     display: none;
 }
 
-input[type="range"] {
+/* input[type="range"] {
     width: 100%;
     background-color: black;
     color: black;
-}
+} */
 
 audio {
     display: none;
@@ -470,6 +473,7 @@ audio:focus {
     height: 50vh;
     padding: 0.5em;
     background-color: white;
+    /* background-color: rgb(53, 53, 53); */
     margin-bottom: 1em;
     overflow-y: auto;
     border-radius: 5px;

@@ -75,8 +75,13 @@ const SongPanel = ({ username }) => {
 
     const handleDrop = async (e) => {
         e.preventDefault();
-        if (e.dataTransfer.files !== null) {
-            const selected = e.dataTransfer.files[0];
+        const acceptedTypes = ["audio/mpeg", "audio/ogg", "audio/flac"];
+        const selected = e.dataTransfer.files[0];
+
+        if (
+            e.dataTransfer.files !== null &&
+            acceptedTypes.includes(selected.type)
+        ) {
             const roomRef = doc(db, "rooms", params.roomID);
             const storageRef = ref(storage, selected.name);
 

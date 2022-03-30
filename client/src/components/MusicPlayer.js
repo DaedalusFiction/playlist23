@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { socket } from "../socket/socket";
 import styles from "../styles/rangeInput.css";
 import { useParams } from "react-router-dom";
+import moment from "moment";
 
 //icons
 import { FaVolumeUp } from "react-icons/fa";
@@ -77,6 +78,14 @@ const MusicPlayer = ({
                     song: nowPlaying,
                     time: currentTime,
                 });
+                const songMessage = {
+                    time: moment().format("h:mm a"),
+                    key: Date.now(),
+                    room: params.roomID,
+                    user: "playlist: 23",
+                    message: `Now Playing: ${nowPlaying.title}`,
+                };
+                socket.emit("sendMessage", songMessage);
             } else {
                 socket.emit("pauseSong", params.roomID);
             }
